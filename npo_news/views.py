@@ -26,9 +26,11 @@ class NewsAPIView(APIView, PageNumberPagination):
     def post(self, request, *args, **kwargs):
         title = request.data.get('title')
         description = request.data.get('description')
+        link = request.data.get('link')
         image = request.data.get('image')
         news = News.objects.create(title=title,
                                    description=description,
+                                   link=link,
                                    image=image)
 
         news.save()
@@ -48,9 +50,11 @@ class NewsDetailAPIView(APIView, PageNumberPagination):
         news = News.objects.get(id=id)
         title = request.data.get('title')
         description = request.data.get('description')
+        link = request.data.get('link')
         image = request.data.get('image')
         news.title = title
         news.description = description
+        news.link = link
         news.image = image
         news.save()
 
@@ -61,4 +65,4 @@ class NewsDetailAPIView(APIView, PageNumberPagination):
     def delete(request, id):
         news = News.objects.get(id=id)
         news.delete()
-        return Response(status=status.HTTP_200_OK)
+        return Response(status=status.HTTP_204_OK)

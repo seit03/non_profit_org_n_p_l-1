@@ -10,6 +10,7 @@ class News(models.Model):
         verbose_name = 'Новость'
         verbose_name_plural = 'Новость'
     title = models.CharField(max_length=100)
+
     description = models.TextField()
     created_date = models.DateField(auto_now_add=True)
     image = models.ImageField(null=True, blank=True, upload_to='upload_to')
