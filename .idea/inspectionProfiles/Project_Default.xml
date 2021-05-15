@@ -1,0 +1,32 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="DuplicatedCode" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <Languages>
+        <language minSize="111" name="Python" />
+      </Languages>
+    </inspection_tool>
+    <inspection_tool class="PyPep8NamingInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredErrors">
+        <list>
+          <option value="N803" />
+          <option value="N801" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="django_blog.settings.SETTINGS_PATH" />
+          <option value="blog.views.PostView.as_view" />
+          <option value="category_profile.models.CharField" />
+          <option value="category_profile.models.EmailField" />
+          <option value="category_profile.views.user" />
+          <option value="category_profile.models.PermissionMixin" />
+          <option value="django_books.tests.Writer" />
+          <option value="multiprocessing.connection.Connection.get" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
