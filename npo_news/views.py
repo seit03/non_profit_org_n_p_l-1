@@ -14,14 +14,14 @@ class NewsAPIView(APIView, PageNumberPagination):
     def get(self, request, *args, **kwargs):
         query = request.query_params.get('query', '')
         news = News.objects.filter(Q(title__icontains=query) |
-                                   Q(description_icontains=query))
+                                   Q(description__icontains=query))
 
         results = self.paginate_queryset(news,
                                          request,
                                          view=self)
         return self.get_paginated_response(self.serializer_class(results,
                                                                  many=True,
-                                                                 comtext={'request': request}).data)
+                                                                 context={'request': request}).data)
 
     def post(self, request, *args, **kwargs):
         title = request.data.get('title')
@@ -59,10 +59,9 @@ class NewsDetailAPIView(APIView, PageNumberPagination):
         news.save()
 
         return Response(data=self.serializer_class(news).data,
-                        status=status.HTTP_202_ACCEPTED)
+                        status=status.HTT_202_ACCEPTED)
 
-    @staticmethod
-    def delete(request, id):
+    def delete(self, request, id):
         news = News.objects.get(id=id)
         news.delete()
-        return Response(status=status.HTTP_204_OK)
+        return Response(status=status.HTTP_204_NO_CONTENT)

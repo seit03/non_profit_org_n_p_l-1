@@ -1,9 +1,8 @@
-from django.db.migrations import serializer
-
+from rest_framework import serializers
 from npo_news.models import News
 
 
-class NewsSerializer(serializer.ModelSerializer):
+class NewsSerializer(serializers.ModelSerializer):
     class Meta:
         model = News
         fields = ('id',
