@@ -12,11 +12,4 @@ class NPOLaw(models.Model):
         return self.title
 
 
-class NPOUser(models.Model):
-    npolaw = models.ForeignKey(NPOLaw,
-                               on_delete=models.CASCADE,
-                               related_name='npolaw_npouser')
-    text = models.TextField()
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
 

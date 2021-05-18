@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from npo_user.models import NPOUser
+
+admin.site.register(NPOUser)
