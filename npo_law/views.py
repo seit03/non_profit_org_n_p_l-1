@@ -64,29 +64,26 @@ class NPOLawDetailAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class NPOLawFavoriteAPIView(APIView, PageNumberPagination):
-    allow_methods = ['GET', 'POST']
+class NPOLawFavoriteAPIView(APIView):
+    allow_methods = ['GET', 'PUT', 'DELETE']
     serializer_class = NPOLawSerializer
 
-    def get(self, request, *args, **kwargs):
-        query = request.query_params.get('query', '')
-        npolaw = NPOLaw.objects.filter(Q(title__icontains=query) |
-                                       Q(description__icontains=query))
+    def get(self, request, id):
+        npolaw = NPOLaw.objects.get(id=id)
+        return Response(data=self.serializer_class(npolaw).data)
 
-        results = self.paginate_queryset(npolaw,
-                                         request,
-                                         view=self)
-        return self.get_paginated_response(self.serializer_class(results,
-                                                                 many=True,
-                                                                 context={'request': request}).data)
-
-    def post(self, request, *args, **kwargs):
+    def put(self, request, id):
+        npolaw = NPOLaw.objects.get(id=id)
         text = request.data.get('text')
         created_date = request.data.get('created_date')
-        updated_date = request.data.get('updated_date')
-        npolawfavorite = NPOLawFavorite.objects.create(text=text,
-                                                       created_date=created_date,
-                                                       updated_date=updated_date)
-        npolawfavorite.save()
-        return Response(data=self.serializer_class(npolawfavorite).data,
-                        status=status.HTTP_201_CREATED)
+        npolaw.text = text
+        npolaw.created_date = created_date
+        npolaw.save()
+        return Response(data=self.serializer_class(npolaw).data,
+                        status=status.HTTP_202_ACCEPTED)
+
+    def delete(self, request, id):
+        npolaw = NPOLaw.objects.get(id=id)
+        npolaw.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+

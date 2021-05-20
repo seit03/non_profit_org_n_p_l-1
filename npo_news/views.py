@@ -67,29 +67,25 @@ class NewsDetailAPIView(APIView, PageNumberPagination):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
-class NewsFavoriteAPIView(APIView, PageNumberPagination):
-    allow_methods = ['GET', 'POST']
-    serializer_class = NewsFavoriteSerializer
+class NewsFavoriteAPIView(APIView):
+    allow_methods = ['GET', 'PUT', 'DELETE']
+    serializer_class = NewsSerializer
 
-    def get(self, request, *args, **kwargs):
-        query = request.query_params.get('query', '')
-        news = News.objects.filter(Q(title__icontains=query) |
-                                   Q(description__icontains=query))
+    def get(self, request, id):
+        news = News.objects.get(id=id)
+        return Response(data=self.serializer_class(news).data)
 
-        results = self.paginate_queryset(news,
-                                         request,
-                                         view=self)
-        return self.get_paginated_response(self.serializer_class(results,
-                                                                 many=True,
-                                                                 context={'request': request}).data)
-
-    def post(self, request, *args, **kwargs):
+    def put(self, request, id):
+        news = News.objects.get(id=id)
         text = request.data.get('text')
         created_date = request.data.get('created_date')
-        updated_date = request.data.get('updated_date')
-        newsfavorite = NewsFavorite.objects.create(text=text,
-                                                   created_date=created_date,
-                                                   updated_date=updated_date)
-        newsfavorite.save()
-        return Response(data=self.serializer_class(newsfavorite).data,
-                        status=status.HTTP_201_CREATED)
+        news.text = text
+        news.created_date = created_date
+        news.save()
+        return Response(data=self.serializer_class(news).data,
+                        status=status.HTTP_202_ACCEPTED)
+
+    def delete(self, request, id):
+        news = News.objects.get(id=id)
+        news.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
