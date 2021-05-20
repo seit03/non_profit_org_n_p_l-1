@@ -6,12 +6,5 @@ class NPOUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = NPOUser
         fields = ('id',
-                  'user_type',
                   'user_name',
-                  'email',
-                  'first_name',
-                  'last_name',
-                  'data_joined',
-                  'is_active'
-                  'is_staff',
-                  'objects')
+                  'email',)

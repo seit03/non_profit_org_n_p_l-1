@@ -1,7 +1,7 @@
 from django.db import models
 
 
-class NPOLaw(models.Model):
+class Publication(models.Model):
     title = models.CharField(max_length=100)
     description = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
@@ -9,13 +9,13 @@ class NPOLaw(models.Model):
                             max_length=200)
 
     def __str__(self):
-        return self.title
+        return f'{self.title}'
 
 
-class NPOLawFavorite(models.Model):
-    npolaw = models.ForeignKey(NPOLaw,
-                               on_delete=models.CASCADE,
-                               related_name='npolaw_npofavorite')
+class PublicationFavorite(models.Model):
+    publication = models.ForeignKey(Publication,
+                                    on_delete=models.CASCADE,
+                                    related_name='publication_publicationfavorite')
     text = models.TextField()
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

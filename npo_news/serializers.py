@@ -11,3 +11,12 @@ class NewsSerializer(serializers.ModelSerializer):
                   'created_date',
                   'image',
                   'link')
+
+
+class NewsFavoriteSerializer(serializers.ModelSerializer):
+    news = NewsSerializer(many=False, read_only=True)
+    news_id = serializers.IntegerField(write_only=True)
+
+    class Meta:
+        model = NewsSerializer
+        fields = '__all__'

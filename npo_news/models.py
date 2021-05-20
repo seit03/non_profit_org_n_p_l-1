@@ -19,3 +19,11 @@ class News(models.Model):
     def __str__(self):
         return f'{self.title}'
 
+
+class NewsFavorite(models.Model):
+    news = models.ForeignKey(News,
+                             on_delete=models.CASCADE,
+                             related_name='news_newsfavorite')
+    text = models.TextField()
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)

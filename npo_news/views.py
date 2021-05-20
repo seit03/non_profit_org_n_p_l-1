@@ -3,8 +3,8 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from npo_news.models import News
-from npo_news.serializers import NewsSerializer
+from npo_news.models import News, NewsFavorite
+from npo_news.serializers import NewsSerializer, NewsFavoriteSerializer
 
 
 class NewsAPIView(APIView, PageNumberPagination):
@@ -65,3 +65,31 @@ class NewsDetailAPIView(APIView, PageNumberPagination):
         news = News.objects.get(id=id)
         news.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class NewsFavoriteAPIView(APIView, PageNumberPagination):
+    allow_methods = ['GET', 'POST']
+    serializer_class = NewsFavoriteSerializer
+
+    def get(self, request, *args, **kwargs):
+        query = request.query_params.get('query', '')
+        news = News.objects.filter(Q(title__icontains=query) |
+                                   Q(description__icontains=query))
+
+        results = self.paginate_queryset(news,
+                                         request,
+                                         view=self)
+        return self.get_paginated_response(self.serializer_class(results,
+                                                                 many=True,
+                                                                 context={'request': request}).data)
+
+    def post(self, request, *args, **kwargs):
+        text = request.data.get('text')
+        created_date = request.data.get('created_date')
+        updated_date = request.data.get('updated_date')
+        newsfavorite = NewsFavorite.objects.create(text=text,
+                                                   created_date=created_date,
+                                                   updated_date=updated_date)
+        newsfavorite.save()
+        return Response(data=self.serializer_class(newsfavorite).data,
+                        status=status.HTTP_201_CREATED)

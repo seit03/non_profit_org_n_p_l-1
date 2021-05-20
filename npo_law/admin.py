@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from npo_law.models import NPOLaw
+
+admin.site.register(NPOLaw)
